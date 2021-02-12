@@ -416,7 +416,7 @@
  *   998 : Dummy Table that ALWAYS reads 25°C or the temperature defined below.
  *   999 : Dummy Table that ALWAYS reads 100°C or the temperature defined below.
  */
-#define TEMP_SENSOR_0 1
+#define TEMP_SENSOR_0 5
 #define TEMP_SENSOR_1 0
 #define TEMP_SENSOR_2 0
 #define TEMP_SENSOR_3 0
@@ -424,7 +424,7 @@
 #define TEMP_SENSOR_5 0
 #define TEMP_SENSOR_6 0
 #define TEMP_SENSOR_7 0
-#define TEMP_SENSOR_BED 1
+#define TEMP_SENSOR_BED 75
 #define TEMP_SENSOR_PROBE 0
 #define TEMP_SENSOR_CHAMBER 0
 
@@ -490,9 +490,9 @@
   // If you are using a pre-configured hotend then you can use one of the value sets by uncommenting it
 
   // Ultimaker
-  #define DEFAULT_Kp 9.06
-  #define DEFAULT_Ki 0.69
-  #define DEFAULT_Kd 29.62
+  #define DEFAULT_Kp 25.23
+  #define DEFAULT_Ki 2.96
+  #define DEFAULT_Kd 53.77
 
   // MakerGear
   //#define DEFAULT_Kp 7.0
@@ -541,9 +541,9 @@
 
   //120V 250W silicone heater into 4mm borosilicate (MendelMax 1.5+)
   //from FOPDT model - kp=.39 Tp=405 Tdead=66, Tc set to 79.2, aggressive factor of .15 (vs .1, 1, 10)
-  #define DEFAULT_bedKp 690.34
-  #define DEFAULT_bedKi 111.47
-  #define DEFAULT_bedKd 1068.83
+  #define DEFAULT_bedKp 32.52
+  #define DEFAULT_bedKi 6.04
+  #define DEFAULT_bedKd 116.77
 
   //120V 250W silicone heater into 4mm borosilicate (MendelMax 1.5+)
   //from pidautotune
@@ -747,7 +747,7 @@
  * Override with M92
  *                                      X, Y, Z, E0 [, E1[, E2...]]
  */
-#define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 400, 409 }
+#define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 400, 320 }
 
 /**
  * Default Max Feed Rate (mm/s)
@@ -782,8 +782,8 @@
  *   M204 R    Retract Acceleration
  *   M204 T    Travel Acceleration
  */
-#define DEFAULT_ACCELERATION          1000                     // X, Y, Z and E acceleration for printing moves
-#define DEFAULT_RETRACT_ACCELERATION  DEFAULT_ACCELERATION                    // E acceleration for retracts
+#define DEFAULT_ACCELERATION          900                    // X, Y, Z and E acceleration for printing moves
+#define DEFAULT_RETRACT_ACCELERATION  1000                    // E acceleration for retracts
 #define DEFAULT_TRAVEL_ACCELERATION   DEFAULT_ACCELERATION    // X, Y, Z acceleration for travel (non printing) moves
 
 /**
@@ -832,7 +832,7 @@
  *
  * See https://github.com/synthetos/TinyG/wiki/Jerk-Controlled-Motion-Explained
  */
-//#define S_CURVE_ACCELERATION
+#define S_CURVE_ACCELERATION
 
 //===========================================================================
 //============================= Z Probe Options =============================
@@ -994,7 +994,7 @@
  *     |    [-]    |
  *     O-- FRONT --+
  */
-#define NOZZLE_TO_PROBE_OFFSET { 40, 15, 0 }
+#define NOZZLE_TO_PROBE_OFFSET { -31, -6, -0.65 }
 
 // Most probes should stay away from the edges of the bed, but
 // with NOZZLE_AS_PROBE this can be negative for a wider probing area.
@@ -1101,7 +1101,7 @@
 // @section extruder
 
 // For direct drive extruder v9 set to true, for geared extruder set to false.
-#define INVERT_E0_DIR true
+#define INVERT_E0_DIR false
 //#define INVERT_E1_DIR false
 //#define INVERT_E2_DIR false
 //#define INVERT_E3_DIR false
@@ -1131,11 +1131,11 @@
 
 // The size of the print bed
 #define X_BED_SIZE 310
-#define Y_BED_SIZE 310
+#define Y_BED_SIZE 315
 
 // Travel limits (mm) after homing, corresponding to endstop positions.
-#define X_MIN_POS -15
-#define Y_MIN_POS -5
+#define X_MIN_POS -4
+#define Y_MIN_POS -3
 #define Z_MIN_POS 0
 #define X_MAX_POS X_BED_SIZE
 #define Y_MAX_POS Y_BED_SIZE

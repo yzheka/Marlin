@@ -20,8 +20,6 @@
  *
  */
 #pragma once
-#define STR_HELPER(x) #x
-#define STR(x) STR_HELPER(x)
 /**
  * Configuration_adv.h
  *
@@ -302,7 +300,7 @@
 
 // Show Temperature ADC value
 // Enable for M105 to include ADC values read from temperature sensors.
-//#define SHOW_TEMP_ADC_VALUES
+#define SHOW_TEMP_ADC_VALUES
 
 /**
  * High Temperature Thermistor Support
@@ -1137,7 +1135,7 @@
   #define SD_PROCEDURE_DEPTH 1              // Increase if you need more nested M32 calls
 
   #define SD_FINISHED_STEPPERRELEASE true   // Disable steppers when SD Print is finished
-  #define SD_FINISHED_RELEASECOMMAND "G28OR5XY\nG0F4000X0Y" STR(Y_BED_SIZE-10) "\nM84\nM107"  // Use "M84XYE" to keep Z enabled so your bed stays in place
+  #define SD_FINISHED_RELEASECOMMAND "G28OR5XY\nG0F4000X0Y" STRINGIFY(Y_BED_SIZE-10) "\nM84\nM107"  // Use "M84XYE" to keep Z enabled so your bed stays in place
 
   // Reverse SD sort to show "more recent" files first, according to the card's FAT.
   // Since the FAT gets out of order with usage, SDCARD_SORT_ALPHA is recommended.
@@ -1619,9 +1617,9 @@
 #define LIN_ADVANCE
 #if ENABLED(LIN_ADVANCE)
   //#define EXTRA_LIN_ADVANCE_K // Enable for second linear advance constants
-  #define LIN_ADVANCE_K 0.1    // Unit: mm compression per 1mm/s extruder speed
+  #define LIN_ADVANCE_K 0.05    // Unit: mm compression per 1mm/s extruder speed
   //#define LA_DEBUG            // If enabled, this will generate debug information output over USB.
-  //#define EXPERIMENTAL_SCURVE // Enable this option to permit S-Curve Acceleration
+  #define EXPERIMENTAL_SCURVE // Enable this option to permit S-Curve Acceleration
 #endif
 
 // @section leveling
@@ -2060,7 +2058,7 @@
                                                   // This short retract is done immediately, before parking the nozzle.
   #define FILAMENT_CHANGE_UNLOAD_FEEDRATE     10  // (mm/s) Unload filament feedrate. This can be pretty fast.
   #define FILAMENT_CHANGE_UNLOAD_ACCEL        25  // (mm/s^2) Lower acceleration may allow a faster feedrate.
-  #define FILAMENT_CHANGE_UNLOAD_LENGTH       80  // (mm) The length of filament for a complete unload.
+  #define FILAMENT_CHANGE_UNLOAD_LENGTH       40  // (mm) The length of filament for a complete unload.
                                                   //   For Bowden, the full length of the tube and nozzle.
                                                   //   For direct drive, the full length of the nozzle.
                                                   //   Set to 0 for manual unloading.
@@ -2069,7 +2067,7 @@
                                                   // 0 to disable start loading and skip to fast load only
   #define FILAMENT_CHANGE_FAST_LOAD_FEEDRATE  15  // (mm/s) Load filament feedrate. This can be pretty fast.
   #define FILAMENT_CHANGE_FAST_LOAD_ACCEL     25  // (mm/s^2) Lower acceleration may allow a faster feedrate.
-  #define FILAMENT_CHANGE_FAST_LOAD_LENGTH    41  // (mm) Load length of filament, from extruder gear to nozzle.
+  #define FILAMENT_CHANGE_FAST_LOAD_LENGTH    0  // (mm) Load length of filament, from extruder gear to nozzle.
                                                   //   For Bowden, the full length of the tube and nozzle.
                                                   //   For direct drive, the full length of the nozzle.
   //#define ADVANCED_PAUSE_CONTINUOUS_PURGE       // Purge continuously up to the purge length until interrupted.
@@ -2227,125 +2225,127 @@
 #if HAS_TRINAMIC_CONFIG
 
   #define HOLD_MULTIPLIER    0.6  // Scales down the holding current from run current
-  #define INTERPOLATE       true  // Interpolate X/Y/Z_MICROSTEPS to 256
+  #define INTERPOLATE        true  // Interpolate X/Y/Z_MICROSTEPS to 256
+  #define MICROSTEPS         16
+  #define RESENSE            0.11
 
   #if AXIS_IS_TMC(X)
-    #define X_CURRENT       800        // (mA) RMS current. Multiply by 1.414 for peak current.
+    #define X_CURRENT       900        // (mA) RMS current. Multiply by 1.414 for peak current.
     #define X_CURRENT_HOME  X_CURRENT  // (mA) RMS current for sensorless homing
-    #define X_MICROSTEPS     16    // 0..256
-    #define X_RSENSE          0.11
+    #define X_MICROSTEPS    MICROSTEPS    // 0..256
+    #define X_RSENSE        RESENSE
     #define X_CHAIN_POS      -1    // <=0 : Not chained. 1 : MCU MOSI connected. 2 : Next in chain, ...
   #endif
 
   #if AXIS_IS_TMC(X2)
     #define X2_CURRENT      800
     #define X2_CURRENT_HOME X2_CURRENT
-    #define X2_MICROSTEPS    16
-    #define X2_RSENSE         0.11
+    #define X2_MICROSTEPS   MICROSTEPS
+    #define X2_RSENSE       RESENSE
     #define X2_CHAIN_POS     -1
   #endif
 
   #if AXIS_IS_TMC(Y)
-    #define Y_CURRENT       1200
+    #define Y_CURRENT       900
     #define Y_CURRENT_HOME  Y_CURRENT
-    #define Y_MICROSTEPS     16
-    #define Y_RSENSE          0.11
+    #define Y_MICROSTEPS    MICROSTEPS
+    #define Y_RSENSE        RESENSE
     #define Y_CHAIN_POS      -1
   #endif
 
   #if AXIS_IS_TMC(Y2)
     #define Y2_CURRENT      800
     #define Y2_CURRENT_HOME Y2_CURRENT
-    #define Y2_MICROSTEPS    16
-    #define Y2_RSENSE         0.11
+    #define Y2_MICROSTEPS   MICROSTEPS
+    #define Y2_RSENSE       RESENSE
     #define Y2_CHAIN_POS     -1
   #endif
 
   #if AXIS_IS_TMC(Z)
     #define Z_CURRENT       1000
     #define Z_CURRENT_HOME  Z_CURRENT
-    #define Z_MICROSTEPS     16
-    #define Z_RSENSE          0.11
+    #define Z_MICROSTEPS    MICROSTEPS
+    #define Z_RSENSE        RESENSE
     #define Z_CHAIN_POS      -1
   #endif
 
   #if AXIS_IS_TMC(Z2)
     #define Z2_CURRENT      800
     #define Z2_CURRENT_HOME Z2_CURRENT
-    #define Z2_MICROSTEPS    16
-    #define Z2_RSENSE         0.11
+    #define Z2_MICROSTEPS   MICROSTEPS
+    #define Z2_RSENSE       RESENSE
     #define Z2_CHAIN_POS     -1
   #endif
 
   #if AXIS_IS_TMC(Z3)
     #define Z3_CURRENT      800
     #define Z3_CURRENT_HOME Z3_CURRENT
-    #define Z3_MICROSTEPS    16
-    #define Z3_RSENSE         0.11
+    #define Z3_MICROSTEPS   MICROSTEPS
+    #define Z3_RSENSE       RESENSE
     #define Z3_CHAIN_POS     -1
   #endif
 
   #if AXIS_IS_TMC(Z4)
     #define Z4_CURRENT      800
     #define Z4_CURRENT_HOME Z4_CURRENT
-    #define Z4_MICROSTEPS    16
-    #define Z4_RSENSE         0.11
+    #define Z4_MICROSTEPS   MICROSTEPS
+    #define Z4_RSENSE       RESENSE
     #define Z4_CHAIN_POS     -1
   #endif
 
   #if AXIS_IS_TMC(E0)
     #define E0_CURRENT      800
-    #define E0_MICROSTEPS    16
-    #define E0_RSENSE         0.11
+    #define E0_MICROSTEPS   MICROSTEPS
+    #define E0_RSENSE       RESENSE
     #define E0_CHAIN_POS     -1
   #endif
 
   #if AXIS_IS_TMC(E1)
     #define E1_CURRENT      800
-    #define E1_MICROSTEPS    16
-    #define E1_RSENSE         0.11
+    #define E1_MICROSTEPS   MICROSTEPS
+    #define E1_RSENSE       RESENSE
     #define E1_CHAIN_POS     -1
   #endif
 
   #if AXIS_IS_TMC(E2)
     #define E2_CURRENT      800
-    #define E2_MICROSTEPS    16
-    #define E2_RSENSE         0.11
+    #define E2_MICROSTEPS   MICROSTEPS
+    #define E2_RSENSE       RESENSE
     #define E2_CHAIN_POS     -1
   #endif
 
   #if AXIS_IS_TMC(E3)
     #define E3_CURRENT      800
-    #define E3_MICROSTEPS    16
-    #define E3_RSENSE         0.11
+    #define E3_MICROSTEPS   MICROSTEPS
+    #define E3_RSENSE       RESENSE
     #define E3_CHAIN_POS     -1
   #endif
 
   #if AXIS_IS_TMC(E4)
     #define E4_CURRENT      800
-    #define E4_MICROSTEPS    16
-    #define E4_RSENSE         0.11
+    #define E4_MICROSTEPS   MICROSTEPS
+    #define E4_RSENSE       RESENSE
     #define E4_CHAIN_POS     -1
   #endif
 
   #if AXIS_IS_TMC(E5)
     #define E5_CURRENT      800
-    #define E5_MICROSTEPS    16
-    #define E5_RSENSE         0.11
+    #define E5_MICROSTEPS   MICROSTEPS
+    #define E5_RSENSE       RESENSE
     #define E5_CHAIN_POS     -1
   #endif
 
   #if AXIS_IS_TMC(E6)
     #define E6_CURRENT      800
-    #define E6_MICROSTEPS    16
-    #define E6_RSENSE         0.11
+    #define E6_MICROSTEPS   MICROSTEPS
+    #define E6_RSENSE       RESENSE
     #define E6_CHAIN_POS     -1
   #endif
 
   #if AXIS_IS_TMC(E7)
     #define E7_CURRENT      800
-    #define E7_MICROSTEPS    16
-    #define E7_RSENSE         0.11
+    #define E7_MICROSTEPS   MICROSTEPS
+    #define E7_RSENSE       RESENSE
     #define E7_CHAIN_POS     -1
   #endif
 
